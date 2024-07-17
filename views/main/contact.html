@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Kontak</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+        }
+        .popup-content {
+            text-align: center;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Formulir Kontak</h2>
+    <form id="contactForm">
+        <div class="form-group">
+            <label for="name">Nama:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="message">Pesan:</label>
+            <textarea id="message" name="message" required></textarea>
+        </div>
+        <button type="submit">Kirim</button>
+    </form>
+    <div id="response" class="response" style="display: none;"></div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <span class="close" id="closePopup">&times;</span>
+        <h2>Feedback Terkirim!</h2>
+        <p>Terima kasih telah mengirimkan feedback. Kami akan segera merespon pesan Anda.</p>
+    </div>
+</div>
+
+<script>
+    const contactForm = document.getElementById('contactForm');
+    const responseElement = document.getElementById('response');
+    const popup = document.getElementById('popup');
+    const closePopup = document.getElementById('closePopup');
+
+    contactForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        responseElement.style.display = 'none';
+
+        const response = await fetch('/submit-contact-form', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const data = await response.json();
+        responseElement.style.display = 'block';
+        responseElement.innerHTML = `
+            <strong>Status:</strong> ${data.status}<br>
+            <strong>Pesan:</strong> ${data.message}<br>
+            <strong>Nama:</strong> ${data.data.name}<br>
+            <strong>Email:</strong> ${data.data.email}<br>
+            <strong>Pesan:</strong> ${data.data.message}<br>
+            <strong>Waktu:</strong> ${new Date(data.timestamp).toLocaleString()}
+        `;
+
+        // Show popup
+        popup.style.display = 'block';
+    });
+
+    closePopup.addEventListener('click', function() {
+        popup.style.display = 'none';
+    });
+</script>
+
+</body>
+</html>

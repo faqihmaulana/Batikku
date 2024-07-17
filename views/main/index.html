@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   {{template "general/header"}}
+   <style>
+    /* Custom styles */
+    #user-element {
+      display: none;
+    }
+    section {
+      padding: 60px 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    .map-container {
+      height: 450px;
+      margin-bottom: 40px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-group button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4f46e5;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+   </style>
+</head>
+<body>
+<div class="bg-white">
+    <header class="absolute inset-x-0 top-0 z-50">
+      <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div class="flex lg:flex-1">
+          <a href="#" class="-m-1.5 p-1.5">
+            <span class="sr-only">Batikku</span>
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+          </a>
+        </div>
+        <div class="flex lg:hidden">
+          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+        <div class="hidden lg:flex lg:gap-x-12">
+          <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+          <a href="#features" class="text-sm font-semibold leading-6 text-gray-900">Features</a>
+          <a href="#artikel" class="text-sm font-semibold leading-6 text-gray-900">Artikel</a>
+          <a href="#contact" class="text-sm font-semibold leading-6 text-gray-900">Contact</a>
+        </div>
+        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a href="/client/register" class="text-sm font-semibold leading-6 text-gray-900" style="padding-right: 20px;">Register</a>
+          <a href="/client/login" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </nav>
+      <!-- Mobile menu, show/hide based on menu open state. -->
+      <div class="lg:hidden" role="dialog" aria-modal="true">
+        <!-- Background backdrop, show/hide based on slide-over state. -->
+        <div class="fixed inset-0 z-50"></div>
+        <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div class="flex items-center justify-between">
+            <a href="#" class="-m-1.5 p-1.5">
+              <span class="sr-only">Ruangguru</span>
+              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+            </a>
+            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+              <span class="sr-only">Close menu</span>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="mt-6 flow-root">
+            <div class="-my-6 divide-y divide-gray-500/10">
+              <div class="space-y-2 py-6">
+                <a href="/" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Home</a>
+                <a href="#features" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Features</a>
+                <a href="#artikel" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Artikel</a>
+                <a href="#contact" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Contact</a>
+              </div>
+              <div class="py-6">
+                <a href="/client/register" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Register</a>
+                <a href="/client/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+    <div class="relative isolate px-6 pt-14 lg:px-8">
+      <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+        <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+      </div>
+      <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+          <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+            Announcing our next round of funding. <a href="#" class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+        <div class="text-center">
+          <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Website Tentang Budidaya Batik</h1>
+          <p class="mt-6 text-lg leading-8 text-gray-600">Final Project for SIKM Ruangguru</p>
+          <div class="mt-10 flex items-center justify-center gap-x-6">
+            <a href="#" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
+            <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Learn more <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+        <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sections -->
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">Fitur</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <!-- Predict -->
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">Deteksi Batik</h3>
+          <p class="text-gray-700">Tanyakan masukan gambar motif batik anda.</p>
+          <div class="mt-4">
+            <!-- predik embed code or link to chatbot -->
+            <a href="/Prediksi-batik" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 inline-block">Mulai Deteksi</a>
+          </div>
+        </div>
+        <!-- Chatbot -->
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">Chatbot</h3>
+          <p class="text-gray-700">Tanyakan apa saja mengenai batik kepada kami.</p>
+          <div class="mt-4">
+            <!-- Chatbot embed code or link to chatbot -->
+            <a href="/chatbot" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 inline-block">Mulai Chat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <section id="artikel" class="bg-gray-100">
+    <div class="container">
+      <h2 class="section-title">Artikel</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">Sejarah Batik di Indonesia</h3>
+          <p class="text-gray-700">Artikel ini membahas asal-usul dan perkembangan batik di Indonesia, serta nilai-nilai budaya yang terkandung di dalamnya.</p>
+          <a href="https://id.wikipedia.org/wiki/Batik" target="_blank" class="text-indigo-600 mt-2 inline-block">Baca selengkapnya</a>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Batik_Indonesia.jpg/250px-Batik_Indonesia.jpg" alt="Sejarah Batik di Indonesia" class="mt-4 rounded-lg">
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">Teknik Pembuatan Batik Tradisional</h3>
+          <p class="text-gray-700">Panduan lengkap tentang teknik-teknik tradisional dalam pembuatan batik, dari membatik hingga proses pewarnaan.</p>
+          <a href="https://id.wikipedia.org/wiki/Pembuatan_Batik" target="_blank" class="text-indigo-600 mt-2 inline-block">Baca selengkapnya</a>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL-00OZdMrkz6VcInkX0sQyBnWmkrjSn3Ec5YOZqCXVX3ggCWnpHc0uYsgvKplfsz_-Dc&usqp=CAU" alt="Teknik Pembuatan Batik Tradisional" class="mt-4 rounded-lg">
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">Batik sebagai Warisan Budaya UNESCO</h3>
+          <p class="text-gray-700">Artikel ini menjelaskan pengakuan batik sebagai warisan budaya tak benda oleh UNESCO, serta dampaknya bagi masyarakat Indonesia.</p>
+          <a href="https://id.wikipedia.org/wiki/Warisan_Budaya_Tak_Benda" target="_blank" class="text-indigo-600 mt-2 inline-block">Baca selengkapnya</a>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Women_Making_Batik%2C_Ketelan_crop.jpg/255px-Women_Making_Batik%2C_Ketelan_crop.jpg" alt="Batik sebagai Warisan Budaya UNESCO" class="mt-4 rounded-lg">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="contact" class="bg-gray-100 py-16">
+    <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d63366.53655744719!2d109.0738664016079!3d-6.961040056627823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1smaps!5e0!3m2!1sid!2sid!4v1720187476409!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="form-container bg-white p-8 rounded-lg shadow-md">
+            <h2 class="section-title text-2xl font-bold mb-6">Hubungi Kami</h2>
+            <div class="contact-info">
+                <p><strong>Alamat:</strong></p>
+                <p>Budaya Batik</p>
+                <p>Kementerian Kebudayaan Republik Indonesia</p>
+                <p>Jl.Mbah Bregas no 40 Desa Sidakaton Kecamatan Dukuhturi</p>
+                <p>Tegal, Jawa Tengan</p>
+            </div>
+            <div class="contact-info mt-6">
+                <p><strong>Nomor Handphone:</strong></p>
+                <p>0895337365528</p>
+                <p>Temukan kami di media sosial:</p>
+                <ul class="social-links mt-2">
+                    <li class="inline-block mr-4">
+                        <a href="https://www.facebook.com" target="_blank" class="text-blue-500 hover:text-blue-700 transition-colors duration-300"><i class="fab fa-facebook-square mr-2"></i>Facebook</a>
+                    </li>
+                    <li class="inline-block mr-4">
+                        <a href="https://twitter.com" target="_blank" class="text-blue-500 hover:text-blue-700 transition-colors duration-300"><i class="fab fa-twitter-square mr-2"></i>Twitter</a>
+                    </li>
+                    <li class="inline-block mr-4">
+                        <a href="https://www.linkedin.com" target="_blank" class="text-blue-500 hover:text-blue-700 transition-colors duration-300"><i class="fab fa-linkedin mr-2"></i>LinkedIn</a>
+                    </li>
+                    <li class="inline-block mr-4">
+                        <a href="https://www.instagram.com" target="_blank" class="text-pink-500 hover:text-pink-700 transition-colors duration-300"><i class="fab fa-instagram-square mr-2"></i>Instagram</a>
+                    </li>
+                    <li class="inline-block">
+                        <a href="https://www.youtube.com/c/AyoSehat" target="_blank" class="text-red-500 hover:text-red-700 transition-colors duration-300"><i class="fab fa-youtube-square mr-2"></i>YouTube</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  
+  {{template "general/footer"}}
+</body>
+</html>

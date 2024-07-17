@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitur Deteksi Batik</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3em;
+            margin: 1em 0;
+            color: #333;
+        }
+
+        .grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        @media (min-width: 1024px) {
+            .grid-cols-1 {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-cols-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .bg-white {
+            background-color: #f0f0f0;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .bg-white:hover {
+            transform: translateY(-5px);
+        }
+
+        .rounded-lg {
+            border-radius: 15px;
+        }
+
+        .shadow-md {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-xl {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .font-semibold {
+            font-weight: bold;
+        }
+
+        .mb-2 {
+            margin-bottom: 1em;
+        }
+
+        .text-gray-700 {
+            color: #666;
+        }
+
+        .mt-4 {
+            margin-top: 1.5em;
+        }
+
+        .btn-upload {
+            display: inline-block;
+            background-color: #6c63ff;
+            color: #fff;
+            padding: 1em 2em;
+            border-radius: 0.8em;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: none;
+            font-size: 1.1em;
+            outline: none;
+        }
+
+        .btn-upload:hover {
+            background-color: #544dd9;
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        #prediction-result {
+            margin-top: 1.5em;
+            font-size: 1.5em;
+            color: #333;
+            display: none;
+        }
+
+        #uploaded-image {
+            max-width: 300px; /* Lebar maksimum gambar */
+            max-height: 300px; /* Tinggi maksimum gambar */
+            border-radius: 10px; /* Opsional: Tambahkan border-radius untuk tampilan yang lebih baik */
+        }
+    </style>
+</head>
+<body>
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">Fitur Deteksi Batik</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-30">
+                <div class="p-8 bg-white rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-2">Deteksi Batik</h3>
+                    <p class="text-gray-700">Unggah gambar motif batik Anda.</p>
+                    <div class="mt-4">
+                        <div class="upload-btn-wrapper">
+                            <button class="btn-upload">Unggah Gambar</button>
+                            <input type="file" name="file" id="fileInput" accept="image/*"/>
+                        </div>
+                        <div id="image-preview" class="mt-4" style="display: none;">
+                            <img id="uploaded-image" src="#" alt="Preview"/>
+                        </div>
+                        <div id="prediction-result" class="mt-4">Prediksi akan muncul di sini setelah gambar diproses.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const predictionResult = document.getElementById('prediction-result');
+        const imagePreview = document.getElementById('image-preview');
+        const uploadedImage = document.getElementById('uploaded-image');
+
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                uploadedImage.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/v1/predict-batik', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                predictionResult.style.display = 'block';
+                predictionResult.textContent = `Hasil Prediksi: ${data.prediction}`;
+            })
+            .catch(error => {
+                predictionResult.style.display = 'block';
+                predictionResult.textContent = 'Terjadi kesalahan saat memproses gambar.';
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
